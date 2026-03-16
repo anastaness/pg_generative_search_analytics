@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ page_title }}</title>
+  <style>
+    :root {
+      --bg: #fdf7fc;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --grid: #f3d3ea;
+
+      /* основные цвета графиков */
+      --pg: #ce0d8a;
+      --pg-top: #ff78ca;
+
+      --competitor: #00a3e4;
+      --competitor-top: #6ed6ff;
+
+      /* дополнительный акцент */
+      --accent: #ff78ca;
+      --pg-soft: #fbe4f3;
+      --competitor-soft: #e8f7fd;
+      --accent-soft: #fff0fa;
+
+      --shadow: 0 10px 30px rgba(206, 13, 138, 0.10);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(206, 13, 138, 0.10) 0%, transparent 30%),
+        radial-gradient(circle at top right, rgba(0, 163, 228, 0.10) 0%, transparent 28%),
+        radial-gradient(circle at bottom center, rgba(255, 120, 202, 0.10) 0%, transparent 34%),
+        var(--bg);
+      color: var(--text);
+    }
+
+    .page {
+      width: 1600px;
+      min-height: 900px;
+      padding: 42px;
+    }
+
+    .header {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--pg-soft);
+      color: var(--pg);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 40px;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .chart-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 28px 24px;
+      min-height: 640px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--pg), var(--competitor), var(--accent));
+    }
+
+    .chart-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .chart-caption {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .plot {
+      position: relative;
+      height: 430px;
+      padding: 24px 20px 56px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #fff8fc 0%, #f8fcff 100%);
+      border: 1px solid var(--grid);
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 70px;
+    }
+
+    .grid-lines {
+      position: absolute;
+      inset: 24px 20px 56px 20px;
+      pointer-events: none;
+    }
+
+    .grid-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      border-top: 1px dashed var(--grid);
+    }
+
+    .grid-line.l1 { top: 0; }
+    .grid-line.l2 { top: 25%; }
+    .grid-line.l3 { top: 50%; }
+    .grid-line.l4 { top: 75%; }
+    .grid-line.l5 { top: 100%; }
+
+    .bars {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 90px;
+    }
+
+    .bar-group {
+      width: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+    }
+
+    .bar-value {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+
+    .bar-outer {
+      width: 110px;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .bar {
+      width: 100%;
+      border-radius: 22px 22px 10px 10px;
+      box-shadow: inset 0 -10px 20px rgba(255, 255, 255, 0.18);
+      position: relative;
+      min-height: 16px;
+    }
+
+    .bar.pg {
+      background: linear-gradient(180deg, var(--pg-top) 0%, var(--pg) 100%);
+    }
+
+    .bar.competitor {
+      background: linear-gradient(180deg, var(--competitor-top) 0%, var(--competitor) 100%);
+    }
+
+    .bar-label {
+      margin-top: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .legend-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+    }
+
+    .legend-swatch.pg {
+      background: var(--pg);
+    }
+
+    .legend-swatch.competitor {
+      background: var(--competitor);
+    }
+
+    .max-note {
+      margin-top: 12px;
+      font-size: 15px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="eyebrow">Первоначальный анализ</div>
+      <h1 class="title">{{ main_title }}</h1>
+      <div class="subtitle">Доля упоминаний и охват запросов</div>
+    </div>
+
+    <div class="charts-grid">
+      {% for chart in charts %}
+      <section class="chart-card">
+        <div class="chart-title">{{ chart.title }}</div>
+        <div class="chart-caption">Сравнение бренда P&amp;G и конкурентов</div>
+
+        <div class="plot">
+          <div class="grid-lines">
+            <div class="grid-line l1"></div>
+            <div class="grid-line l2"></div>
+            <div class="grid-line l3"></div>
+            <div class="grid-line l4"></div>
+            <div class="grid-line l5"></div>
+          </div>
+
+          <div class="bars">
+            {% for bar in chart.bars %}
+            <div class="bar-group">
+              <div class="bar-value">{{ bar.value_str }}</div>
+              <div class="bar-outer">
+                <div
+                  class="bar {{ bar.class_name }}"
+                  style="height: {{ '%.2f'|format(bar.height_pct) }}%;"
+                ></div>
+              </div>
+              <div class="bar-label">{{ bar.label }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item">
+            <span class="legend-swatch pg"></span>
+            <span>P&amp;G</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch competitor"></span>
+            <span>Конкуренты</span>
+          </div>
+        </div>
+
+
+      </section>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

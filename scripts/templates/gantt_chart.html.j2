@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ page_title }}</title>
+  <style>
+      @page {
+        size: A3 landscape;
+        margin: 12mm;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    :root {
+      --bg: #f4f7fb;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --grid: #e5e7eb;
+      --grid-strong: #cbd5e1;
+
+      --diag: #ce0d8a;
+      --diag-soft: #ffd8ef;
+
+      --design: #00a3e4;
+      --design-soft: #d6f3ff;
+
+      --prod: #ff78ca;
+      --prod-soft: #ffe0f3;
+
+      --launch: #8b5cf6;
+      --launch-soft: #ede9fe;
+
+      --analytics: #06b6d4;
+      --analytics-soft: #cffafe;
+
+      --opt: #f59e0b;
+      --opt-soft: #ffedd5;
+
+      --scale: #10b981;
+      --scale-soft: #d1fae5;
+
+      --final: #334155;
+      --final-soft: #e2e8f0;
+
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .page {
+      width: 1920px;
+      min-height: 1240px;
+      padding: 36px;
+    }
+
+    .header {
+      margin-bottom: 24px;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .title-wrap {
+      max-width: 1200px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 48px;
+      line-height: 1.08;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .budget-box {
+      min-width: 330px;
+      padding: 18px 22px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid #e5e7eb;
+      text-align: right;
+    }
+
+    .budget-label {
+      font-size: 16px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .budget-value {
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 900;
+      color: #1e293b;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+
+    .gantt-card {
+      padding: 0 0 18px;
+    }
+
+    .month-row {
+      position: relative;
+      margin: 0 20px;
+      height: 54px;
+      background: #0f172a;
+      border-radius: 18px 18px 0 0;
+      overflow: hidden;
+    }
+
+    .month-cell {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      border-left: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .head-row {
+      display: grid;
+      grid-template-columns: 520px 180px 1fr 160px;
+      min-height: 54px;
+      background: #f8fafc;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      margin: 0 20px;
+    }
+
+    .head-row .cell {
+      font-size: 14px;
+      font-weight: 900;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      padding: 14px 18px;
+    }
+
+    .body {
+      position: relative;
+      margin: 0 20px;
+    }
+
+    .month-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--grid);
+      z-index: 1;
+    }
+
+    .task-row {
+      display: grid;
+      grid-template-columns: 520px 180px 1fr 160px;
+      min-height: 78px;
+      border-bottom: 1px solid #edf1f5;
+      position: relative;
+      background: #fff;
+    }
+
+    .task-row:last-child {
+      border-bottom: none;
+    }
+
+    .cell {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      padding: 12px 18px;
+      min-width: 0;
+    }
+
+    .task-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .task-name {
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 850;
+      color: #1e293b;
+    }
+
+    .task-dep {
+      font-size: 13px;
+      line-height: 1.3;
+      color: #94a3b8;
+    }
+
+    .phase-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 900;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .phase-pill.diag { background: var(--diag-soft); color: var(--diag); }
+    .phase-pill.design { background: var(--design-soft); color: #007bb0; }
+    .phase-pill.prod { background: var(--prod-soft); color: #d63396; }
+    .phase-pill.launch { background: var(--launch-soft); color: #7c3aed; }
+    .phase-pill.analytics { background: var(--analytics-soft); color: #0891b2; }
+    .phase-pill.opt { background: var(--opt-soft); color: #d97706; }
+    .phase-pill.scale { background: var(--scale-soft); color: #059669; }
+    .phase-pill.final { background: var(--final-soft); color: #334155; }
+
+    .timeline-cell {
+      position: relative;
+      padding: 0 18px;
+      overflow: visible;
+    }
+
+    .timeline-inner {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .task-bar {
+      position: absolute;
+      top: 19px;
+      height: 40px;
+      border-radius: 14px;
+      min-width: 18px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+      z-index: 3;
+    }
+
+    .task-bar.diag { background: linear-gradient(90deg, var(--diag-soft), var(--diag)); }
+    .task-bar.design { background: linear-gradient(90deg, var(--design-soft), var(--design)); }
+    .task-bar.prod { background: linear-gradient(90deg, var(--prod-soft), var(--prod)); }
+    .task-bar.launch { background: linear-gradient(90deg, var(--launch-soft), var(--launch)); }
+    .task-bar.analytics { background: linear-gradient(90deg, var(--analytics-soft), var(--analytics)); }
+    .task-bar.opt { background: linear-gradient(90deg, var(--opt-soft), var(--opt)); }
+    .task-bar.scale { background: linear-gradient(90deg, var(--scale-soft), var(--scale)); }
+    .task-bar.final { background: linear-gradient(90deg, var(--final-soft), var(--final)); }
+
+    .date-label {
+      position: absolute;
+      top: 27px;
+      transform: translateY(-50%);
+      font-size: 13px;
+      font-weight: 800;
+      color: #475569;
+      white-space: nowrap;
+      z-index: 4;
+      background: rgba(255,255,255,0.92);
+      padding: 2px 8px;
+      border-radius: 8px;
+    }
+
+    .budget-cell {
+      justify-content: flex-end;
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+      white-space: nowrap;
+    }
+
+    .legend-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 16px;
+      padding: 18px 20px 8px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #475569;
+    }
+
+    .legend-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 5px;
+    }
+
+    .legend-swatch.diag { background: var(--diag); }
+    .legend-swatch.design { background: var(--design); }
+    .legend-swatch.prod { background: var(--prod); }
+    .legend-swatch.launch { background: var(--launch); }
+    .legend-swatch.analytics { background: var(--analytics); }
+    .legend-swatch.opt { background: var(--opt); }
+    .legend-swatch.scale { background: var(--scale); }
+    .legend-swatch.final { background: var(--final); }
+
+    .phase-budget-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 8px 20px 0;
+    }
+
+    .phase-budget {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid #edf1f5;
+    }
+
+    .phase-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .phase-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    .phase-budget-value {
+      font-size: 14px;
+      font-weight: 900;
+      color: #0f172a;
+      white-space: nowrap;
+    }
+
+    .footnote {
+      margin: 16px 20px 0;
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="title-row">
+        <div class="title-wrap">
+          <h1 class="title">{{ main_title }}</h1>
+          <div class="subtitle">{{ subtitle }}</div>
+        </div>
+
+        <div class="budget-box">
+          <div class="budget-label">Общий бюджет инициативы</div>
+          <div class="budget-value">{{ total_budget }}</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="card gantt-card">
+      <div class="month-row">
+        {% set left_offset_px = 700 %}
+        {% set timeline_width_px = 1040 %}
+
+        {% for month in months %}
+        <div
+          class="month-cell"
+          style="
+            left: {{ left_offset_px + (timeline_width_px * month.left_pct / 100) }}px;
+            width: {{ timeline_width_px * month.width_pct / 100 }}px;
+          "
+        >
+          {{ month.label }}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="head-row">
+        <div class="cell">Задача</div>
+        <div class="cell">Фаза</div>
+        <div class="cell">Сроки</div>
+        <div class="cell" style="justify-content:flex-end;">Бюджет</div>
+      </div>
+
+      <div class="body">
+        {% for month in months[1:] %}
+        <div
+          class="month-line"
+          style="left: {{ 700 + (1040 * month.left_pct / 100) }}px;"
+        ></div>
+        {% endfor %}
+
+        {% for item in tasks %}
+        <div class="task-row">
+          <div class="cell">
+            <div class="task-meta">
+              <div class="task-name">{{ item.task }}</div>
+              <div class="task-dep">
+                {{ item.owner }}{% if item.depends_on %} · зависит от: {{ item.depends_on }}{% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="cell">
+            <div class="phase-pill {{ item.phase_class }}">{{ item.phase }}</div>
+          </div>
+
+          <div class="timeline-cell">
+            <div class="timeline-inner">
+              <div
+                class="task-bar {{ item.phase_class }}"
+                style="
+                  left: {{ '%.4f'|format(item.left_pct) }}%;
+                  width: {{ '%.4f'|format(item.width_pct) }}%;
+                "
+                title="{{ item.date_range }}"
+              ></div>
+
+              <div
+                class="date-label"
+                style="left: {{ '%.4f'|format(item.date_label_left_pct) }}%;"
+              >
+                {{ item.date_range }}
+              </div>
+            </div>
+          </div>
+
+          <div class="cell budget-cell">{{ item.budget_str }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="legend-wrap">
+        {% for item in phase_summary %}
+        <div class="legend-item">
+          <span class="legend-swatch {{ item.phase_class }}"></span>
+          <span>{{ item.phase }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="phase-budget-list">
+        {% for item in phase_summary %}
+        <div class="phase-budget">
+          <div class="phase-left">
+            <span class="legend-swatch {{ item.phase_class }}"></span>
+            <span class="phase-name">{{ item.phase }}</span>
+          </div>
+          <div class="phase-budget-value">{{ item.budget_str }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+
+  </div>
+</body>
+</html>
