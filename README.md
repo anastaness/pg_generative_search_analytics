@@ -6,7 +6,7 @@
 - **Организатор:** Changellenge >>
 - **Даты:** март 2026
 - **Трек:** Аналитика данных
-- **Диплом финалиста:** [`changellenge3_analytics_p&g.pdf`](docs/changellenge3_analytics_p&g.pdf)
+- **Диплом финалиста:** [`changellenge3_analytics_p&g.png`](docs/changellenge3_analytics_p&g.png)
 - **Топ-1 в первом туре** (среди 4000+ участников и 600+ команд)
 
 ## О проекте
