@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ page_title }}</title>
+  <style>
+    :root {
+      --bg: #fdf7fc;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --grid: #f3d3ea;
+
+      /* основная палитра */
+      --pg: #ce0d8a;
+      --competitor: #00a3e4;
+      --accent: #ff78ca;
+
+      /* статусы */
+      --no-brand: #ff78ca;
+      --pg-only: #ce0d8a;
+      --both-present: #00a3e4;
+
+      --no-brand-soft: #fff0fa;
+      --pg-only-soft: #fbe4f3;
+      --both-present-soft: #e8f7fd;
+
+      --shadow: 0 10px 30px rgba(206, 13, 138, 0.10);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(206, 13, 138, 0.10) 0%, transparent 30%),
+        radial-gradient(circle at top right, rgba(0, 163, 228, 0.10) 0%, transparent 28%),
+        radial-gradient(circle at bottom center, rgba(255, 120, 202, 0.10) 0%, transparent 35%),
+        var(--bg);
+    }
+
+    .page {
+      width: 1600px;
+      min-height: 900px;
+      padding: 42px;
+    }
+
+    .header {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #fbe4f3;
+      color: var(--pg);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 40px;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--pg), var(--competitor), var(--accent));
+    }
+
+    .top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .chart-title {
+      font-size: 30px;
+      font-weight: 800;
+      margin: 0 0 10px;
+    }
+
+    .chart-caption {
+      margin: 0;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .total-box {
+      min-width: 220px;
+      padding: 20px 22px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fff6fc 0%, #f8fcff 100%);
+      border: 1px solid #f3d3ea;
+      text-align: right;
+    }
+
+    .total-label {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .total-value {
+      font-size: 44px;
+      line-height: 1;
+      font-weight: 800;
+      color: var(--pg);
+    }
+
+    .stack-wrap {
+      margin-bottom: 30px;
+      padding: 24px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #fff8fc 0%, #f8fcff 100%);
+      border: 1px solid #f3d3ea;
+    }
+
+    .stack-bar {
+      width: 100%;
+      height: 78px;
+      display: flex;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #f7eaf3;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.05);
+    }
+
+    .segment {
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 48px;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .segment.no-brand {
+      background: linear-gradient(180deg, #ffb3de 0%, var(--no-brand) 100%);
+      color: #7a0d4f;
+    }
+
+    .segment.pg-only {
+      background: linear-gradient(180deg, #e84fb4 0%, var(--pg-only) 100%);
+      color: #ffffff;
+    }
+
+    .segment.both-present {
+      background: linear-gradient(180deg, #66d5ff 0%, var(--both-present) 100%);
+      color: #ffffff;
+    }
+
+    .segment-label {
+      padding: 0 14px;
+      text-align: center;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.12);
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .detail-card {
+      border-radius: 20px;
+      padding: 22px 20px;
+      border: 1px solid #f3d3ea;
+    }
+
+    .detail-card.no-brand {
+      background: var(--no-brand-soft);
+    }
+
+    .detail-card.pg-only {
+      background: var(--pg-only-soft);
+    }
+
+    .detail-card.both-present {
+      background: var(--both-present-soft);
+    }
+
+    .detail-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      flex: 0 0 auto;
+    }
+
+    .swatch.no-brand {
+      background: var(--no-brand);
+    }
+
+    .swatch.pg-only {
+      background: var(--pg-only);
+    }
+
+    .swatch.both-present {
+      background: var(--both-present);
+    }
+
+    .detail-label {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .detail-value {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .detail-pct {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="eyebrow">{{ eyebrow }}</div>
+      <h1 class="title">{{ main_title }}</h1>
+      <div class="subtitle">{{ subtitle }}</div>
+    </div>
+
+    <section class="card">
+      <div class="top-row">
+        <div>
+          <h2 class="chart-title">Статусы запросов</h2>
+          <p class="chart-caption">
+            Показывает, в какой доле запросов бренд не найден, найден только P&amp;G или одновременно P&amp;G и конкуренты.
+          </p>
+        </div>
+
+        <div class="total-box">
+          <div class="total-label">Всего запросов</div>
+          <div class="total-value">{{ total }}</div>
+        </div>
+      </div>
+
+      <div class="stack-wrap">
+        <div class="stack-bar">
+          {% for seg in segments %}
+          <div
+            class="segment {{ seg.class_name }}"
+            style="width: {{ '%.4f'|format(seg.pct) }}%;"
+            title="{{ seg.label }}: {{ seg.value }} ({{ seg.pct_str }})"
+          >
+            <div class="segment-label">
+              {{ seg.value }}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="details">
+        {% for seg in segments %}
+        <div class="detail-card {{ seg.class_name }}">
+          <div class="detail-top">
+            <span class="swatch {{ seg.class_name }}"></span>
+            <div class="detail-label">{{ seg.label }}</div>
+          </div>
+          <div class="detail-value">{{ seg.value }}</div>
+          <div class="detail-pct">{{ seg.pct_str }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</body>
+</html>

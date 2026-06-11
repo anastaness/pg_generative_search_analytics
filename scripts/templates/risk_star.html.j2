@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ page_title }}</title>
+  <style>
+   @page {
+        size: A3 landscape;
+        margin: 10mm;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    :root {
+      --bg: #f4f7fb;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #dbe4ef;
+
+      --critical: #ce0d8a;
+      --critical-soft: #ffe0f3;
+
+      --elevated: #00a3e4;
+      --elevated-soft: #d8f4ff;
+
+      --controlled: #ff78ca;
+      --controlled-soft: #ffe4f4;
+
+      --center: #0f172a;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, #eef4ff 0%, transparent 30%),
+        radial-gradient(circle at top right, #fff4df 0%, transparent 28%),
+        var(--bg);
+      color: var(--text);
+    }
+
+    .page {
+      width: 1920px;
+      min-height: 1180px;
+      padding: 36px;
+    }
+
+    .header {
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #e8eefc;
+      color: #3156b8;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 48px;
+      line-height: 1.08;
+      font-weight: 800;
+      color: #1e293b;
+      max-width: 1200px;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 20px;
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--critical), var(--elevated), var(--controlled));
+    }
+
+    .left-card {
+      padding: 24px 24px 20px;
+      min-height: 910px;
+    }
+
+    .right-card {
+      padding: 24px;
+      min-height: 910px;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .section-caption {
+      margin: 0 0 18px;
+      font-size: 17px;
+      color: var(--muted);
+    }
+
+    .star-wrap {
+      position: relative;
+      height: 760px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at center, rgba(0,163,228,0.05) 0%, rgba(255,255,255,0) 55%),
+        linear-gradient(180deg, #fbfdff 0%, #f8fafc 100%);
+      border: 1px solid #edf1f5;
+      overflow: hidden;
+    }
+
+    .svg-holder {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .orbit-label {
+      font-size: 13px;
+      fill: #94a3b8;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .risk-index {
+      font-size: 14px;
+      fill: white;
+      font-weight: 900;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .risk-label {
+      font-size: 13px;
+      fill: #475569;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid #edf1f5;
+      font-size: 14px;
+      font-weight: 800;
+      color: #475569;
+    }
+
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+    }
+
+    .legend-dot.critical { background: var(--critical); }
+    .legend-dot.elevated { background: var(--elevated); }
+    .legend-dot.controlled { background: var(--controlled); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .risk-card {
+      border: 1px solid #edf1f5;
+      border-radius: 18px;
+      padding: 16px 16px 14px;
+      background: linear-gradient(180deg, #fbfdff 0%, #f8fafc 100%);
+    }
+
+    .risk-card.critical { box-shadow: inset 4px 0 0 var(--critical); }
+    .risk-card.elevated { box-shadow: inset 4px 0 0 var(--elevated); }
+    .risk-card.controlled { box-shadow: inset 4px 0 0 var(--controlled); }
+
+    .risk-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .risk-number {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .risk-number.critical { background: var(--critical); }
+    .risk-number.elevated { background: var(--elevated); }
+    .risk-number.controlled { background: var(--controlled); }
+
+    .risk-name {
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 850;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .risk-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .badge.prob {
+      background: #eef2ff;
+      color: #4f46e5;
+    }
+
+    .badge.impact {
+      background: #ecfeff;
+      color: #0f766e;
+    }
+
+    .badge.level.critical {
+      background: var(--critical-soft);
+      color: var(--critical);
+    }
+
+    .badge.level.elevated {
+      background: var(--elevated-soft);
+      color: var(--elevated);
+    }
+
+    .badge.level.controlled {
+      background: var(--controlled-soft);
+      color: #d63396;
+    }
+
+    .risk-description {
+      font-size: 14px;
+      line-height: 1.4;
+      color: #64748b;
+    }
+
+    .summary-box {
+      margin-top: 18px;
+      border-radius: 20px;
+      background: #fff8fb;
+      border: 1px solid #fde2f2;
+      padding: 18px 18px 16px;
+    }
+
+    .summary-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #9d174d;
+      margin-bottom: 10px;
+    }
+
+    .summary-box p {
+      margin: 0 0 10px;
+      font-size: 15px;
+      line-height: 1.45;
+      color: #475569;
+    }
+
+    .summary-box p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="eyebrow">{{ eyebrow }}</div>
+      <h1 class="title">{{ main_title }}</h1>
+      <div class="subtitle">{{ subtitle }}</div>
+    </div>
+
+    <div class="layout">
+      <section class="card left-card">
+        <h2 class="section-title">Радиальная карта рисков</h2>
+        <p class="section-caption">Чем дальше узел от центра, тем выше влияние. Чем больше размер узла, тем выше вероятность.</p>
+
+        <div class="star-wrap">
+          <svg class="svg-holder" viewBox="0 0 840 760" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="420" cy="360" r="290" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="4 6"/>
+            <circle cx="420" cy="360" r="220" fill="none" stroke="#dbeafe" stroke-width="1.5" stroke-dasharray="4 6"/>
+            <circle cx="420" cy="360" r="150" fill="none" stroke="#fbcfe8" stroke-width="1.5" stroke-dasharray="4 6"/>
+
+            <text x="420" y="74" class="orbit-label">Высокое влияние</text>
+            <text x="420" y="145" class="orbit-label">Среднее влияние</text>
+            <text x="420" y="215" class="orbit-label">Низкое влияние</text>
+
+            {% for risk in risks %}
+            <line
+              x1="{{ risk.cx }}" y1="{{ risk.cy }}"
+              x2="{{ risk.x }}" y2="{{ risk.y }}"
+              stroke="#d8e2ee"
+              stroke-width="2"
+            />
+            {% endfor %}
+
+            <circle cx="420" cy="360" r="62" fill="url(#centerGrad)" />
+            <text x="420" y="350" text-anchor="middle" fill="white" font-size="24" font-weight="900">AI Search</text>
+            <text x="420" y="382" text-anchor="middle" fill="#cbd5e1" font-size="15" font-weight="800">Проект</text>
+
+            {% for risk in risks %}
+            <circle
+              cx="{{ risk.x }}"
+              cy="{{ risk.y }}"
+              r="{{ risk.node_radius }}"
+              class="node {{ risk.level_class }}"
+              fill="{% if risk.level_class == 'critical' %}#ce0d8a{% elif risk.level_class == 'elevated' %}#00a3e4{% else %}#ff78ca{% endif %}"
+              filter="drop-shadow(0px 8px 18px rgba(15,23,42,0.14))"
+            />
+            <text x="{{ risk.x }}" y="{{ risk.y + 1 }}" class="risk-index">{{ risk.index }}</text>
+            <text x="{{ risk.label_x }}" y="{{ risk.label_y }}" class="risk-label">R{{ risk.index }}</text>
+            {% endfor %}
+
+            <defs>
+              <linearGradient id="centerGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1e293b"/>
+                <stop offset="100%" stop-color="#0f172a"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item">
+            <span class="legend-dot critical"></span>
+            <span>Ключевой риск</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot elevated"></span>
+            <span>Зона внимания</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot controlled"></span>
+            <span>Контролируемый</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card right-card">
+        <h2 class="section-title">Расшифровка рисков</h2>
+        <p class="section-caption">Карточки справа помогают читать визуал без мучений и гаданий, что обычно уже достижение.</p>
+
+        <div class="cards-grid">
+          {% for risk in risks %}
+          <div class="risk-card {{ risk.level_class }}">
+            <div class="risk-card-top">
+              <div class="risk-number {{ risk.level_class }}">{{ risk.index }}</div>
+              <div style="min-width:0;">
+                <div class="risk-name">{{ risk.risk }}</div>
+                <div class="risk-badges">
+                  <span class="badge prob">Вероятность: {{ risk.probability }}</span>
+                  <span class="badge impact">Влияние: {{ risk.impact }}</span>
+                  <span class="badge level {{ risk.level_class }}">{{ risk.level_label }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="risk-description">{{ risk.description }}</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="summary-box">
+          <div class="summary-title">Вывод по рискам</div>
+          {% for paragraph in summary_text %}
+          <p>{{ paragraph }}</p>
+          {% endfor %}
+        </div>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

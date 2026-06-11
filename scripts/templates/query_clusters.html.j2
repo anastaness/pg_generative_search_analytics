@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+
+<style>
+:root{
+  --bg:#fdf7fc;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+
+  --hair:#ce0d8a;
+  --oral:#00a3e4;
+  --baby:#ff78ca;
+  --other:#ff78ca;
+
+  --hair-soft:#fbe4f3;
+  --oral-soft:#e8f7fd;
+  --baby-soft:#fff0fa;
+  --other-soft:#fff0fa;
+
+  --shadow:0 10px 30px rgba(206,13,138,0.10);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter,Arial;
+  background:
+    radial-gradient(circle at top left, rgba(206,13,138,0.10) 0%, transparent 28%),
+    radial-gradient(circle at top right, rgba(0,163,228,0.10) 0%, transparent 26%),
+    radial-gradient(circle at bottom center, rgba(255,120,202,0.10) 0%, transparent 34%),
+    var(--bg);
+  color:var(--text);
+}
+
+.page{
+  width:1600px;
+  min-height:900px;
+  padding:40px;
+}
+
+.header{
+  margin-bottom:30px;
+}
+
+.title{
+  font-size:40px;
+  font-weight:800;
+  margin:0;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+}
+
+.cluster{
+  background:var(--card);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  padding:24px;
+  border-top:6px solid transparent;
+}
+
+.cluster-title{
+  font-size:24px;
+  font-weight:800;
+  margin-bottom:18px;
+}
+
+.query{
+  padding:12px 14px;
+  border-radius:10px;
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+.cluster.hair{
+  border-top-color:var(--hair);
+}
+.cluster.oral{
+  border-top-color:var(--oral);
+}
+.cluster.baby{
+  border-top-color:var(--baby);
+}
+.cluster.other{
+  border-top-color:var(--other);
+}
+
+.cluster.hair .cluster-title{color:var(--hair)}
+.cluster.oral .cluster-title{color:var(--oral)}
+.cluster.baby .cluster-title{color:var(--baby)}
+.cluster.other .cluster-title{color:var(--other)}
+
+.cluster.hair .query{background:var(--hair-soft)}
+.cluster.oral .query{background:var(--oral-soft)}
+.cluster.baby .query{background:var(--baby-soft)}
+.cluster.other .query{background:var(--other-soft)}
+
+.empty{
+  color:var(--muted);
+  font-style:italic;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <h1 class="title">Кластеры сильных запросов</h1>
+  </div>
+
+  <div class="grid">
+
+    {% for cluster in clusters %}
+    <div class="cluster {{ cluster.class }}">
+
+      <div class="cluster-title">
+        {{ cluster.name }}
+      </div>
+
+      {% if cluster.queries %}
+
+        {% for q in cluster.queries %}
+        <div class="query">
+          {{ q }}
+        </div>
+        {% endfor %}
+
+      {% else %}
+
+        <div class="empty">
+          нет сильных запросов
+        </div>
+
+      {% endif %}
+
+    </div>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+</body>
+</html>
